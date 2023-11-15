@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Thiệp</title>
+    </head>
+    <body>
+        <div class="name">
+            <div id="question-container">
+                <h1 id="question">Nhập password để thấy điều đặc biệt nhé!</h1>
+                <h1 id="please" style="display: none;">Sao lại chọn No rùi, chọn lại Yes đi chị</h1>
+                <button onclick="yes()">Yes</button>
+                <button onclick="no(event)">No</button>
+            </div>
+    
+            <div id="password-container" style="display: none;">
+                <h1>Nhập ở dưới này nè:</h1>
+                <input id="password" type="password"/>
+                <button onclick="submit()">Click</button>
+            </div>
+    
+            <div style="display: none; margin-top: -12%;" id="card" class="card">
+                <div class="outside">
+                  <div class="front">
+                    <p>Happy Birthday</p>
+                    <div class="cake">
+                      <div class="top-layer"></div>
+                      <div class="middle-layer"></div>
+                      <div class="bottom-layer"></div>
+                      <div class="candle"></div>
+                    </div>
+                  </div>
+                  <div class="back"></div>
+                </div>
+                <div class="inside">
+                    <img style="display: none; width: 98%;" id="inside-img" src="https://github.com/tuong1008/thiepSinhNhat/blob/e35ee7daca3985717fa43b41b69d11bd44880fd2/hoai-han.jpg?raw=true"></img>
+                    <div id="inside-text">
+                        <p>生日快乐</p>
+                        <p class="signed">Chúc chị sinh thần vui vẻ, hạnh phúc và luôn xinh đẹp. Đây là món quà nhỏ em tặng chị mong nó có thể giúp chị rạng rỡ hơn. Hy vọng tương lai em sẽ tặng chị được nhiều sự rạng rỡ hơn. <br/> Cảm ơn chị vì đã luôn yêu thương em</p>
+                        <p class="signed">Thương chị ❤</p>
+                        <div onclick="openPicture()" style="font-size: 45px; margin: -36px 0 -32px;">&#127873;</div>
+                    </div>
+                </div>
+              </div>
+        </div>
+        
+          <canvas style="display: none;" class="confetti" id="canvas"></canvas>
+
+    <style>
+        @import url(https://fonts.googleapis.com/css?family=Dancing+Script);
+        .confetti{
+   max-width: 100%;
+   display: block;
+   margin: 0 auto;
+   user-select: none;
+}
+
+.name
+{
+    position: absolute;
+    left: 0;
+    right: 0;
+    text-align: center;
+    top: 37%;
+}
+
+
+        input{
+            padding: 0.375rem 0.75rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #495057;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid #ced4da;
+            border-radius: 0.25rem;
+            margin-top: 8px;
+        }
+
+        button{
+            color: #6c757d;
+            background-color: white;
+            border-color: #6c757d;
+            border: 1px solid #6c757d;
+            padding: 0.375rem 0.75rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            border-radius: 0.25rem;
+            min-width: 60px;
+            margin-top: 8px;
+        }
+        
+        p.signed {
+        margin-top: -12px;
+        text-align: center;
+        font-family: 'Dancing Script', sans-serif;
+        font-size: 16px;
+        }
+        * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+        }
+        body {
+        background-color: #fdbf00;
+        }
+        .card {
+        width: 640px;
+        height: 400px;
+        position: absolute;
+        margin: auto;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        -webkit-perspective: 1200px;
+        perspective: 1200px;
+        transition: 1s;
+        }
+        .card:hover {
+        transform: rotate(-5deg);
+        }
+        .card:hover .outside {
+        transform: rotateY(-130deg);
+        }
+        .outside,
+        .inside {
+        height: 100%;
+        width: 50%;
+        position: absolute;
+        left: 50.1%;
+        }
+        .inside {
+        background: linear-gradient(to right, #e7e7e7, #ffffff 30%);
+        line-height: 3;
+        padding: 0 20px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        left: 50%;
+        }
+        .outside {
+        -webkit-transform-style: preserve-3d;
+        transform-style: preserve-3d;
+        z-index: 1;
+        transform-origin: left;
+        transition: 2s;
+        cursor: pointer;
+        }
+        .front,
+        .back {
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        transform: rotateX(0deg);
+        }
+        .front {
+        background-color: #ffffff;
+        }
+        .back {
+        transform: rotateY(180deg);
+        background: linear-gradient(to left, #e7e7e7, #ffffff 30%);
+        }
+        .cake {
+        width: 100%;
+        position: absolute;
+        bottom: 30px;
+        }
+        .top-layer,
+        .middle-layer,
+        .bottom-layer {
+        height: 80px;
+        width: 240px;
+        background-repeat: repeat;
+        background-size: 60px 100px;
+        background-position: 28px 0;
+        background-image: linear-gradient(
+            transparent 50px,
+            #fedbab 50px,
+            #fedbab 60px,
+            transparent 60px
+            ),
+            radial-gradient(circle at 30px 5px, #994c10 30px, #fcbf29 31px);
+        border-radius: 10px 10px 0 0;
+        position: relative;
+        margin: auto;
+        }
+        .middle-layer {
+        transform: scale(0.85);
+        top: 6px;
+        }
+        .top-layer {
+        transform: scale(0.7);
+        top: 26px;
+        }
+        .candle {
+        height: 45px;
+        width: 15px;
+        background: repeating-linear-gradient(
+            45deg,
+            #fd3018 0,
+            #fd3018 5px,
+            #ffa89e 5px,
+            #ffa89e 10px
+        );
+        position: absolute;
+        margin: auto;
+        left: 0;
+        right: 0;
+        bottom: 202px;
+        }
+        .candle:before {
+        content: "";
+        position: absolute;
+        height: 16px;
+        width: 16px;
+        background-color: #ffa500;
+        border-radius: 0 50% 50% 50%;
+        bottom: 48px;
+        transform: rotate(45deg);
+        left: -1px;
+        }
+        .outside p {
+        font-size: 23px;
+        text-transform: uppercase;
+        margin-top: 30px;
+        text-align: center;
+        letter-spacing: 6px;
+        color: #000046;
+        }
+        .inside h1 {
+        font-size: 120px;
+        line-height: 120px;
+        }
+    </style>
+    <script>
+        function openPicture(){
+            let img = document.getElementById("inside-img");
+            let insideText = document.getElementById("inside-text");
+            let canvas = document.getElementById("canvas");
+            insideText.style.display = "none";
+            img.style.display = "block";
+            canvas.style.display = "block";
+        }
+
+        function yes(){
+            let question = document.getElementById("question");
+            let questionContainer = document.getElementById("question-container");
+            let container = document.getElementById("password-container");
+            question.style.display = "none";
+            container.style.display = "block";
+            questionContainer.style.display = "none";
+        }
+
+        function no(){
+            let question = document.getElementById("question");
+            let please = document.getElementById("please");
+            question.style.display = "none";
+            please.style.display = "block";
+            event.target.style.display = "none";
+        }
+
+        function submit(){
+            let container = document.getElementById("password-container");
+            let passwordField = document.getElementById("password");
+            let card = document.getElementById("card");
+            if (password.value == 1611){
+                card.style.display = "block";
+                container.style.display = "none";
+            }
+        }
+
+        (function () {
+            function $(id) {
+                return document.getElementById(id);
+            }
+
+            var card = $('card'),
+                    openB = $('open'),
+                    closeB = $('close'),
+                    timer = null;
+            console.log('wat', card);
+            openB.addEventListener('click', function () {
+                card.setAttribute('class', 'open-half');
+                if (timer)
+                    clearTimeout(timer);
+                timer = setTimeout(function () {
+                    card.setAttribute('class', 'open-fully');
+                    timer = null;
+                }, 1000);
+            });
+
+            closeB.addEventListener('click', function () {
+                card.setAttribute('class', 'close-half');
+                if (timer)
+                    clearTimerout(timer);
+                timer = setTimeout(function () {
+                    card.setAttribute('class', '');
+                    timer = null;
+                }, 1000);
+            });
+
+        }());
+    </script>
+    <script>
+        //-----------Var Inits--------------
+canvas = document.getElementById("canvas");
+ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+cx = ctx.canvas.width / 2;
+cy = ctx.canvas.height / 2;
+
+let confetti = [];
+const confettiCount = 300;
+const gravity = 0.5;
+const terminalVelocity = 5;
+const drag = 0.075;
+const colors = [
+{ front: 'red', back: 'darkred' },
+{ front: 'green', back: 'darkgreen' },
+{ front: 'blue', back: 'darkblue' },
+{ front: 'yellow', back: 'darkyellow' },
+{ front: 'orange', back: 'darkorange' },
+{ front: 'pink', back: 'darkpink' },
+{ front: 'purple', back: 'darkpurple' },
+{ front: 'turquoise', back: 'darkturquoise' }];
+
+
+//-----------Functions--------------
+resizeCanvas = () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  cx = ctx.canvas.width / 2;
+  cy = ctx.canvas.height / 2;
+};
+
+randomRange = (min, max) => Math.random() * (max - min) + min;
+
+initConfetti = () => {
+  for (let i = 0; i < confettiCount; i++) {
+    confetti.push({
+      color: colors[Math.floor(randomRange(0, colors.length))],
+      dimensions: {
+        x: randomRange(10, 20),
+        y: randomRange(10, 30) },
+
+      position: {
+        x: randomRange(0, canvas.width),
+        y: canvas.height - 1 },
+
+      rotation: randomRange(0, 2 * Math.PI),
+      scale: {
+        x: 1,
+        y: 1 },
+
+      velocity: {
+        x: randomRange(-25, 25),
+        y: randomRange(0, -50) } });
+
+
+  }
+};
+
+//---------Render-----------
+render = () => {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  confetti.forEach((confetto, index) => {
+    let width = confetto.dimensions.x * confetto.scale.x;
+    let height = confetto.dimensions.y * confetto.scale.y;
+
+    // Move canvas to position and rotate
+    ctx.translate(confetto.position.x, confetto.position.y);
+    ctx.rotate(confetto.rotation);
+
+    // Apply forces to velocity
+    confetto.velocity.x -= confetto.velocity.x * drag;
+    confetto.velocity.y = Math.min(confetto.velocity.y + gravity, terminalVelocity);
+    confetto.velocity.x += Math.random() > 0.5 ? Math.random() : -Math.random();
+
+    // Set position
+    confetto.position.x += confetto.velocity.x;
+    confetto.position.y += confetto.velocity.y;
+
+    // Delete confetti when out of frame
+    if (confetto.position.y >= canvas.height) confetti.splice(index, 1);
+
+    // Loop confetto x position
+    if (confetto.position.x > canvas.width) confetto.position.x = 0;
+    if (confetto.position.x < 0) confetto.position.x = canvas.width;
+
+    // Spin confetto by scaling y
+    confetto.scale.y = Math.cos(confetto.position.y * 0.1);
+    ctx.fillStyle = confetto.scale.y > 0 ? confetto.color.front : confetto.color.back;
+
+    // Draw confetti
+    ctx.fillRect(-width / 2, -height / 2, width, height);
+
+    // Reset transform matrix
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+  });
+
+  // Fire off another round of confetti
+  if (confetti.length <= 10) initConfetti();
+
+  window.requestAnimationFrame(render);
+};
+
+//---------Execution--------
+initConfetti();
+render();
+
+//----------Resize----------
+window.addEventListener('resize', function () {
+  resizeCanvas();
+});
+
+//------------Click------------
+window.addEventListener('click', function () {
+  initConfetti();
+});
+    </script>
+</body>
+</html>
