@@ -21,7 +21,7 @@
     
             <div style="display: none; margin-top: -12%;" id="card" class="card">
                 <div class="outside">
-                  <div class="front">
+                  <div class="front" onclick="openCard()">
                     <p>Happy Birthday</p>
                     <div class="cake">
                       <div class="top-layer"></div>
@@ -118,10 +118,10 @@
         perspective: 1200px;
         transition: 1s;
         }
-        .card:hover {
+        .card.clicked {
         transform: rotate(-5deg);
         }
-        .card:hover .outside {
+        .card.clicked .outside{
         transform: rotateY(-130deg);
         }
         .outside,
@@ -239,6 +239,11 @@
         }
     </style>
     <script>
+        function openCard(){
+          let card = document.getElementById("card");
+          card.className += ' clicked';
+        }
+
         function openPicture(){
             let img = document.getElementById("inside-img");
             let insideText = document.getElementById("inside-text");
